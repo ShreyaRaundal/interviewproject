@@ -46,55 +46,55 @@ This project demonstrates how integrating multiple security approaches can make 
 
 ---
 
-Database Usage in the Project:
+Database Integration (My Role):
 
-We used a MySQL database to manage user information and activity logs for the secure data transfer process. The database provided persistent storage and helped us manage authentication and user access.
+I set up and configured the MySQL database to store user credentials, share metadata, and activity logs for the secure data sharing system.
+I wrote SQL scripts for initializing the database schema and provided CRUD (Create, Read, Update, Delete) operations through JDBC in Java.
+Example of Data in the Database:
 
-Typical Data Stored:
+User Table:
+Stores user info for authentication and authorization.
 
-User details: (username, password [securely hashed], email, etc.)
-Secret sharing metadata:
-Share IDs
-Associated user ID
-Timestamps
-Status of share (sent, received, pending)
-Logs:
-Actions performed (data embedded, data retrieved, etc.)
-Success/failure status
-Timestamps
-Example of Database Tables:
+Columns: id, username, password_hash, email, created_at
+Shares Table:
+Manages metadata about each secret share.
 
-users
+Columns: id, user_id, share_data (encrypted or as file path), created_at, status
+Logs Table:
+Tracks actions like embedding or retrieving secrets.
 
-id	username	password_hash	email	created_at
-1	alice	(hashed)	...	...
-shares
+Columns: id, user_id, action, status, timestamp
+Sample SQL Queries I wrote:
 
-id	user_id	share_data (possibly encrypted or as a file path)	created_at	status
-logs
-
-id	user_id	action	status	timestamp
-1	1	Embedded Secret	success	2024-05-11 09:00:00
-Sample Queries:
-
-To store a new user:
+Creating the Users Table:
 
 SQL
-INSERT INTO users (username, password_hash, email, created_at)
-VALUES ('alice', 'encrypted_hash', 'alice@email.com', NOW());
-To save a generated share:
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  email VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+Inserting a New User:
+
+SQL
+INSERT INTO users (username, password_hash, email)
+VALUES ('alice', 'encrypted_hash', 'alice@email.com');
+Storing a Secret Share:
 
 SQL
 INSERT INTO shares (user_id, share_data, created_at, status)
 VALUES (1, 'path/to/share.png', NOW(), 'sent');
-To log an activity:
+Logging an Activity:
 
 SQL
 INSERT INTO logs (user_id, action, status, timestamp)
 VALUES (1, 'Embedded Secret', 'success', NOW());
-Summary:
-The database mainly handled authentication, tracking secret shares, and recording actions for security and auditing purposes. All sensitive data (like shares or hashes) was either encrypted or stored as references, not as plain text.
+Connectivity:
 
+I managed the database connection in Java using JDBC, configuring the connection URL, username, and password in the DBConnection.java file
+---
 **Tips for Interview:**
 - Emphasize the “multi-layered” approach and why it’s more secure.
 - Give a real-world analogy (e.g., “It’s like locking a box, hiding the box in a painting, and then splitting the painting into puzzle pieces”).
