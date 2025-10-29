@@ -146,10 +146,97 @@ If you want a more detailed code example (like executing a query or closing a co
 
 Let me know if you want table schemas, more query examples, or a code snippet for JDBC connection!
 ---
-**Tips for Interview:**
-- Emphasize the “multi-layered” approach and why it’s more secure.
-- Give a real-world analogy (e.g., “It’s like locking a box, hiding the box in a painting, and then splitting the painting into puzzle pieces”).
-- Briefly mention technologies and your contributions.
-- Be ready to answer how each security layer works.
+Certainly! Below are well-structured answers for each of your interview questions, tailored specifically to your Secure Video Steganography System project, with technical and practical clarity:
 
-Let me know if you want a customized 1-minute pitch, more technical details, or help with specific interview questions!
+---
+
+## Project Purpose & Problem
+
+**Q: What is the main purpose of your project?**  
+The main purpose is to provide a highly secure method for hiding and sharing confidential information by combining steganography, cryptography, and visual secret sharing. It protects sensitive data from unauthorized access and tampering.
+
+**Q: What problem does it solve?**  
+Traditional methods (like simple encryption or hiding data in files) can be cracked or detected by attackers. Our project solves this by layering multiple security techniques, making it extremely difficult to extract or modify the hidden data without authorization.
+
+**Q: Why did you choose this topic?**  
+We wanted to address real-world challenges of secure data sharing—especially in fields like defense, communication, or confidential business transfers—where both secrecy and data integrity are vital. Combining multiple security techniques interested us because it demonstrates practical, advanced security.
+
+**Q: Explain your project in simple terms.**  
+Imagine you have a secret message. Instead of just locking it in a box (encryption) or hiding it under the bed (steganography), we do both—and then split the key into pieces that only work when put together. Even if someone finds one piece, they can't read your secret.
+
+---
+
+## Technical Questions
+
+**Q: What technologies and tools did you use?**  
+- Programming: Java (Eclipse IDE)
+- Database: MySQL (with JDBC connector)
+- Security: AES for encryption, MD5 for hashing, LSB (Least Significant Bit) for steganography, Visual Secret Sharing (VSS)
+- Others: QR Code libraries, Java Swing for GUI
+
+**Q: How does LSB steganography actually hide the data?**  
+LSB steganography hides information by replacing the least significant bits of pixel values in an image or video frame with the bits of the secret data. This change is visually undetectable but allows data to be retrieved later.
+
+**Q: Why did you use AES instead of RSA?**  
+AES is a symmetric key algorithm, which is much faster and more efficient for encrypting large amounts of data (like images or videos). RSA is asymmetric and better for small data or key exchange, but is slower for bulk encryption.
+
+**Q: What role does MD5 hashing play in your system?**  
+MD5 hashes are used to generate a fingerprint for the original message. After extraction, we compare the hash of the retrieved message to the original hash to verify data integrity and check for tampering.
+
+**Q: How does K-Means clustering fit into your project?**  
+If used: K-Means clustering can be applied to preprocess images or video frames to improve the embedding capacity or robustness of steganography by identifying optimal regions for data hiding.  
+If not used: K-Means is not directly used in our core pipeline, but could be integrated for advanced frame selection or noise reduction in future versions.
+
+**Q: How do you ensure both confidentiality and integrity of the hidden message?**  
+Confidentiality: By encrypting the data using AES and hiding it using steganography.  
+Integrity: By generating an MD5 hash of the original data and verifying it after extraction.
+
+**Q: What kind of database structure did you use?**  
+We used a relational structure with tables such as:
+- users (id, username, password_hash, email)
+- shares (id, user_id, share_data, status, timestamp)
+- logs (id, user_id, action, status, timestamp)
+Relations: shares and logs reference users via user_id as a foreign key.
+
+**Q: Can you explain the data flow or architecture of your system?**  
+(Refer to the diagram you provided)  
+- Sender inputs data → hash generated → data encrypted (AES) → hidden in image/QR/video frame (LSB steganography) → split using Visual Secret Sharing → shares stored/distributed  
+- Receiver collects shares → reconstructs secret → decodes hidden data → decrypts → verifies hash.
+
+---
+
+## Your Role & Contribution
+
+**Q: What specific part of the project did you work on?**  
+I worked on both frontend (Java Swing GUI) and backend (Java logic for encryption, steganography, secret sharing), as well as database integration (JDBC).
+
+**Q: Did you handle both frontend and backend?**  
+Yes, I contributed significantly to both. I designed the GUI, integrated it with backend logic, and ensured smooth user interaction.
+
+**Q: What was the most challenging part of the project?**  
+The biggest challenge was ensuring seamless integration between multiple security modules (encryption, steganography, secret sharing) and maintaining performance and usability.
+
+**Q: How did you test your system?**  
+I wrote and executed test cases for every module—verifying encryption/decryption, data hiding/extraction, share splitting/combining, and database operations. I also performed manual and automated tests for edge cases and error handling.
+
+**Q: If you had more time, how would you improve the project?**  
+- Enhance the user interface for better accessibility.
+- Add support for more media types (audio, video).
+- Implement advanced steganalysis-resistant techniques.
+- Improve scalability and deploy as a secure web service.
+
+---
+
+## Output & Impact
+
+**Q: What were the final results?**  
+The system successfully hid, encrypted, split, and securely shared sensitive data among users. Only authorized users could reconstruct and verify the information. The interface was easy to use and all modules worked as intended.
+
+**Q: How do you measure that your system is secure?**  
+- By testing with steganalysis tools to confirm data is not detectable.
+- Confirming that decryption is not possible without the correct key and all shares.
+- Verifying hash values to ensure no tampering occurred.
+
+**Q: Can this project be deployed commercially?**  
+Yes, with further enhancements for scalability and user management, this system can be commercialized for industries needing high security—such as defense, corporate communications, or legal document transfer.
+
