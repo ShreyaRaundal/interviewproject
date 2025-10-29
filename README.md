@@ -102,6 +102,42 @@ Here’s how to elaborate this for your interview, including what queries you wr
 **Connectivity:**  
 - I managed the database connection in Java using JDBC, configuring the connection URL, username, and password in the `DBConnection.java` file.
 
+Here’s how you can explain what you did with JDBC (Java Database Connectivity) in your Secure Video Steganography System project:
+
+---
+
+**JDBC Integration – What I Did:**
+
+- I set up the JDBC connection between our Java application and the MySQL database.
+- In the code (specifically in `DBConnection.java`), I configured the JDBC URL, username, and password to enable connectivity.
+- I wrote methods to establish and close the database connection, ensuring efficient resource management and error handling.
+- I implemented SQL queries (like INSERT, SELECT, UPDATE) using Java’s `PreparedStatement` and `Statement` objects to securely interact with the database.
+- I handled exceptions to manage connection failures, SQL errors, and ensured user feedback.
+- I tested the connection by performing CRUD (Create, Read, Update, Delete) operations, confirming proper data flow between the Java app and the database.
+
+---
+
+**Sample JDBC Code Snippet (DBConnection.java):**
+```java
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DBConnection {
+    private static final String URL = "jdbc:mysql://localhost:3306/your_database";
+    private static final String USER = "root";
+    private static final String PASSWORD = "root";
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+}
+```
+
+**How to Describe in Interview:**
+> “I was responsible for integrating our Java application with MySQL using JDBC. I wrote the code to establish secure connections, execute SQL queries, and handle exceptions. This allowed the application to store and retrieve user credentials, shares, and logs from the database efficiently.”
+
+If you want a more detailed code example (like executing a query or closing a connection), let me know!
 ---
 
 **How to Say It in Interview:**
