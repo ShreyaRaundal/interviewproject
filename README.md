@@ -100,9 +100,67 @@ Here’s how to elaborate this for your interview, including what queries you wr
     ```
 
 **Connectivity:**  
-- I managed the database connection in Java using JDBC, configuring the connection URL, username, and password in the `DBConnection.java` file.
+Schema Explanation:
 
-Here’s how you can explain what you did with JDBC (Java Database Connectivity) in your Secure Video Steganography System project:
+users: Stores user login and registration info.
+shares: Stores information about each secret share, linking to the user.
+logs: Tracks user/system actions for security and auditing.
+secrets (optional): Stores the original secret text and its hash for verification.
+media (optional): Stores references to media files (like QR codes or video frames) associated with a secret.
+How to use:
+
+Use the users table for authentication.
+Use the shares table to manage secret share generation, storage, and retrieval.
+Use the logs table to monitor system activity.
+Use the secrets and media tables if you want to save original data and associated files for further processing or verification.
+-- Users table: stores user credentials
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Shares table: stores secret share metadata and optionally file references or encrypted blobs
+CREATE TABLE shares (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    share_data VARCHAR(255) NOT NULL, -- Could be a file path or encrypted string
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('sent','received','pending') DEFAULT 'pending',
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Logs table: records all major actions for auditing and troubleshooting
+CREATE TABLE logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    action VARCHAR(100) NOT NULL,
+    status ENUM('success', 'failure') DEFAULT 'success',
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Optionally, if you want to store original text and its hash for verification
+CREATE TABLE secrets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    original_text TEXT NOT NULL,
+    hashcode VARCHAR(64) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Optionally, if you want to store QR code images or video frame references
+CREATE TABLE media (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    secret_id INT NOT NULL,
+    media_type ENUM('qr', 'video_frame', 'image') NOT NULL,
+    file_path VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (secret_id) REFERENCES secrets(id) ON DELETE CASCADE
+);
 
 ---
 
