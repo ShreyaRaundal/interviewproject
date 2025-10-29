@@ -322,6 +322,82 @@ Certainly! Below are well-structured answers for each of your interview question
 
 ---
 
+Great question! Here’s a clear explanation of **Statement**, **PreparedStatement**, and **CallableStatement** in Java (JDBC)—how they differ, when to use each, and how you can explain your understanding or use in your Secure Video Steganography System project interview.
+
+---
+
+## 1. Statement
+
+- **What is it?**  
+  A Statement is used to execute simple SQL queries without parameters.
+- **How does it work?**  
+  You write the full SQL query as a string and execute it.
+- **When to use:**  
+  When your query is static and does not require user input or variable data.
+
+**Example:**
+```java
+Statement stmt = connection.createStatement();
+ResultSet rs = stmt.executeQuery("SELECT * FROM users");
+```
+
+---
+
+## 2. PreparedStatement
+
+- **What is it?**  
+  A PreparedStatement is used for executing pre-compiled SQL queries with parameters (placeholders).
+- **How does it work?**  
+  You write the SQL query with `?` as placeholders, then set values using setter methods.
+- **When to use:**  
+  When your query takes user input or variable data. It helps prevent SQL Injection and is more efficient for repeated queries.
+
+**Example:**
+```java
+String sql = "SELECT * FROM users WHERE username = ? AND password_hash = ?";
+PreparedStatement pstmt = connection.prepareStatement(sql);
+pstmt.setString(1, "alice");
+pstmt.setString(2, "encrypted_hash");
+ResultSet rs = pstmt.executeQuery();
+```
+
+---
+
+## 3. CallableStatement
+
+- **What is it?**  
+  A CallableStatement is used to execute stored procedures in the database.
+- **How does it work?**  
+  You call a stored procedure (which is defined in the database) using `{call procedureName(?, ?)}` syntax.
+- **When to use:**  
+  When you want to run complex business logic that's encapsulated in a database stored procedure.
+
+**Example:**
+```java
+CallableStatement cstmt = connection.prepareCall("{call getUserDetails(?, ?)}");
+cstmt.setString(1, "alice");
+cstmt.registerOutParameter(2, Types.VARCHAR); // If your procedure returns a value
+cstmt.execute();
+String userDetails = cstmt.getString(2);
+```
+
+---
+
+## How to Explain in Interview
+
+> In my project, I primarily used **PreparedStatement** for executing queries with user input, such as inserting user details or verifying login credentials, because it’s secure and prevents SQL Injection.  
+> I used **Statement** for simple static queries, like fetching all records.  
+> If we had complex operations as stored procedures in MySQL, I would use **CallableStatement** to call them.
+
+---
+
+**Key Points to Remember:**
+- **Statement:** Simple, static queries (not recommended for user input).
+- **PreparedStatement:** Dynamic queries with parameters; safe and efficient.
+- **CallableStatement:** For calling stored procedures in the database.
+
+Would you like sample code from your project context or more specific examples?
+
 ## Project Purpose & Problem
 
 **Q: What is the main purpose of your project?**  
